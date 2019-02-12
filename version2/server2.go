@@ -7,10 +7,10 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/nicewook/slack_slash_cmd/slash"
+	"github.com/nicewook/slack_slash_cmd/version2/slash"
 )
 
-func index() {
+func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	fmt.Fprint(w, "Welcome, I'm Timebot\n\nI can convert KST <-> PST/PDT")
 }
 
