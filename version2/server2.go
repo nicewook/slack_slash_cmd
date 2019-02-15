@@ -1,4 +1,3 @@
-// reference link: https://github.com/nlopes/slack/blob/master/examples/slash/slash.go
 package main
 
 import (
@@ -11,7 +10,7 @@ import (
 )
 
 func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	fmt.Fprint(w, "Welcome, I'm Timebot\n\nI can convert KST <-> PST/PDT")
+	fmt.Fprint(w, "Welcome, I'm Timebot\nI can convert KST <-> PST/PDT")
 }
 
 func main() {

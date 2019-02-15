@@ -7,62 +7,49 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-// SlashCommand is Slack slash command struct
-type SlashCommand struct {
-	Token          string `json:"token"`
-	TeamID         string `json:"tead_id"`
-	TeamDomain     string `json:"team_domain"`
-	EnterpriseID   string `json:"enterprise_id,omitempty"`
-	EnterPriseName string `json:"enterprise_name,omitempty"`
-	ChannelID      string `json:"channel_id"`
-	ChannelName    string `json:"channel_name"`
-	UserID         string `json:"user_id"`
-	UserName       string `json:"user_name"`
-	Command        string `json:"command"`
-	Text           string `json:"text"`
-	ResponseURL    string `json:"response_url"`
-	TirggerID      string `json:"trigger_id"`
-}
-
-func slashCommandParse(r *http.Request) (s SlashCommand, err error) {
-	if err = r.ParseForm(); err != nil {
-		return s, err
-	}
-	s.Token = r.PostForm.Get("token")
-	s.TeamID = r.PostForm.Get("team_id")
-	s.TeamDomain = r.PostForm.Get("team_domain")
-	s.EnterpriseID = r.PostForm.Get("enterprise_id")
-	s.EnterPriseName = r.PostForm.Get("enterprise_name")
-	s.ChannelID = r.PostForm.Get("channel_id")
-	s.ChannelName = r.PostForm.Get("channel_name")
-	s.UserID = r.PostForm.Get("user_id")
-	s.UserName = r.PostForm.Get("user_name")
-	s.Command = r.PostForm.Get("command")
-	s.Text = r.PostForm.Get("text")
-	s.ResponseURL = r.PostForm.Get("response_url")
-	s.TirggerID = r.PostForm.Get("trigger_id")
-
-	return s, nil
-}
-
 // Handler deals with slash commands
+// Check HTTP Request and ParseForm()
 func Handler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	s, err := slashCommandParse(r)
 
+	// raw HTTP Request
+	fmt.Printf("r\n\n%+v\n\n", r)
+
+	err := r.ParseForm()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	// TODO: validateToken
+	// ParseForm() HTTP Request
+	fmt.Printf("r ParseForm()\n\n%+v\n\n", r)
 
-	switch s.Command {
-	case "/time":
-		response := fmt.Sprintf("You requested for KST <-> PST/PDT for %#v", s)
-		w.Write([]byte(response))
-
-	default:
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+	for k, v := range r.PostForm {
+		fmt.Printf("%v: %v\n", k, v)
 	}
+
+	response := fmt.Sprintf("Request accepted")
+	w.Write([]byte(response))
 }
+
+// Handler deals with slash commands
+// func Handler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+// 	err := r.ParseForm()
+// 	if err != nil {
+// 		w.WriteHeader(http.StatusInternalServerError)
+// 		return
+// 	}
+
+// 	cmd := r.PostFormValue("command")
+
+// 	// TODO: validateToken
+
+// 	switch cmd {
+// 	case "/time":
+// 		response := fmt.Sprintf("You requested for KST <-> PST/PDT for %+v", r)
+// 		w.Write([]byte(response))
+
+// 	default:
+// 		w.WriteHeader(http.StatusInternalServerError)
+// 		return
+// 	}
+// }
