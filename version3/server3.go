@@ -7,14 +7,14 @@ import (
 	"os"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/nicewook/slack_slash_cmd/version3/slack/slash"
+	"github.com/nicewook/slack_slash_cmd/version3/slash"
 )
 
 func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	fmt.Fprint(w, "Welcome, I'm Timebot\nI can convert KST <-> PST/PDT")
 }
 
-var slackSigningToken string
+//var slackSigningToken string
 
 func mustLookupEnv(env string) string {
 	ret, ok := os.LookupEnv(env)
@@ -32,7 +32,7 @@ func main() {
 		port = "8080"
 	}
 
-	slackSigningToken := mustLookupEnv("SLACK_SIGNING_SECRET")
+	slash.slackSigningToken = mustLookupEnv("SLACK_SIGNING_SECRET")
 
 	r := httprouter.New()
 	r.GET("/", index)
