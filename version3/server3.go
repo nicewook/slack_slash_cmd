@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/nicewook/slack_slash_cmd/version3/slash"
+	"github.com/nicewook/slack_slash_cmd/version3/slack/slash"
 )
 
 func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
