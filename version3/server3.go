@@ -14,13 +14,14 @@ func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	fmt.Fprint(w, "Welcome, I'm Timebot\nI can convert KST <-> PST/PDT")
 }
 
+var slackSigningToken string
+
 func mustLookupEnv(env string) string {
 	ret, ok := os.LookupEnv(env)
 
 	if !ok {
 		log.Fatalf("Environment Variable %v is not available!\n", env)
 	}
-
 	return ret
 }
 
@@ -31,7 +32,7 @@ func main() {
 		port = "8080"
 	}
 
-	slackToken := mustLookupEnv("SLACK_SIGNING_SECRET")
+	slackSigningToken := mustLookupEnv("SLACK_SIGNING_SECRET")
 
 	r := httprouter.New()
 	r.GET("/", index)
